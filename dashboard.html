@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard - The Shine Education System</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f7fb;
+        color: #222;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 240px;
+        height: 100vh;
+        background: #123c69;
+        color: white;
+        padding: 25px 15px;
+    }
+
+    .logo {
+        text-align: center;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #ffffff33;
+    }
+
+    .logo h2 {
+        font-size: 20px;
+    }
+
+    .logo p {
+        margin-top: 6px;
+        color: #dbeafe;
+    }
+
+    .menu {
+        margin-top: 25px;
+    }
+
+    .menu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 13px;
+        margin-bottom: 7px;
+        border-radius: 6px;
+    }
+
+    .menu a:hover,
+    .menu a.active {
+        background: #1d5d91;
+    }
+
+    .main {
+        margin-left: 240px;
+        min-height: 100vh;
+    }
+
+    .topbar {
+        background: white;
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px #00000012;
+    }
+
+    .topbar h1 {
+        color: #123c69;
+    }
+
+    .logout {
+        background: #d62828;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .content {
+        padding: 30px;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px #0000000d;
+    }
+
+    .card h3 {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .number {
+        color: #123c69;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px #0000000d;
+    }
+
+    .section h2 {
+        color: #123c69;
+        margin-bottom: 20px;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .action {
+        background: #eef5fb;
+        color: #123c69;
+        padding: 15px 20px;
+        border-radius: 7px;
+        font-weight: bold;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+    }
+
+    .action:hover {
+        background: #dcecf9;
+    }
+
+    .error {
+        color: #d62828;
+        font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+
+        .sidebar {
+            width: 200px;
+        }
+
+        .main {
+            margin-left: 200px;
+        }
+
+        .stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .sidebar {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .main {
+            margin-left: 0;
+        }
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        .topbar {
+            padding: 15px;
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <h2>🏫 Shine School</h2>
+
+        <p>Campus 2 Admin</p>
+
+    </div>
+
+
+    <div class="menu">
+
+        <a href="dashboard.html" class="active">
+            📊 Dashboard
+        </a>
+
+        <a href="students.html">
+            👨‍🎓 Students
+        </a>
+
+        <a href="teachers.html">
+            👩‍🏫 Teachers
+        </a>
+
+        <a href="result.html">
+            📝 Results
+        </a>
+
+        <a href="attendance.html">
+            📅 Attendance
+        </a>
+
+        <a href="fees.html">
+            💰 Fees
+        </a>
+
+        <a href="announcements.html">
+            📢 Announcements
+        </a>
+
+        <a href="reports.html">
+            📈 Reports
+        </a>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+
+    <div class="topbar">
+
+        <h1>Admin Dashboard</h1>
+
+        <button
+            class="logout"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+
+    <div class="content">
+do
+<div class="section" id="admissionNotification" style="display:none;">
+
+    <h2>🔔 New Admission</h2>
+
+    <p id="admissionText"></p>
+
+    <br>
+
+    <a href="admissions.html" class="action">
+        👨‍🎓 View Admission
+    </a>
+
+</div>
+        <div class="stats">
+
+
+            <div class="card">
+
+                <h3>Total Students</h3>
+
+                <div
+                    class="number"
+                    id="totalStudents">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Total Teachers</h3>
+
+                <div
+                    class="number"
+                    id="totalTeachers">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Today's Attendance</h3>
+
+                <div
+                    class="number"
+                    id="todayAttendance">
+
+                    0%
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Pending Fees</h3>
+
+                <div
+                    class="number"
+                    id="pendingFees">
+
+                    Rs. 0
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="section">
+
+            <h2>⚡ Quick Actions</h2>
+
+
+            <div class="actions">
+
+                <a
+                    href="students.html"
+                    class="action">
+
+                    ➕ Add Student
+
+                </a>
+
+
+                <a
+                    href="teachers.html"
+                    class="action">
+
+                    👩‍🏫 Add Teacher
+
+                </a>
+
+
+                <a
+                    href="result.html"
+                    class="action">
+
+                    📝 Add Result
+
+                </a>
+
+
+                <a
+                    href="attendance.html"
+                    class="action">
+
+                    📅 Attendance
+
+                </a>
+
+
+                <a
+                    href="fees.html"
+                    class="action">
+
+                    💰 Add Fee
+
+                </a>
+
+
+                <a
+                    href="announcements.html"
+                    class="action">
+
+                    📢 New Announcement
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="section">
+
+            <h2>📊 School Information</h2>
+
+            <p>
+                Welcome to the administration panel of
+                The Shine Education System, Campus 2.
+            </p>
+
+            <br>
+
+            <p>
+                From this dashboard, school data will be
+                managed securely.
+            </p>
+
+        </div>
+
+
+        <div
+            id="dashboardError"
+            class="error">
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<script>
+
+
+    async function loadDashboard() {
+
+        try {
+
+            const response =
+                await fetch("/api/data");
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Database load failed"
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            /*
+             * TOTAL STUDENTS
+             */
+// ===============================
+// NEW ADMISSION NOTIFICATION
+// ===============================
+
+const admissions =
+    Array.isArray(data.admissions)
+        ? data.admissions
+        : [];
+
+const pendingAdmissions =
+    admissions.filter(
+        admission =>
+            admission.status === "Pending"
+    );
+
+const notification =
+    document.getElementById(
+        "admissionNotification"
+    );
+
+const admissionText =
+    document.getElementById(
+        "admissionText"
+    );
+
+if (
+    notification &&
+    admissionText &&
+    pendingAdmissions.length > 0
+) {
+
+    notification.style.display =
+        "block";
+
+    admissionText.innerText =
+        "🔔 " +
+        pendingAdmissions.length +
+        " new admission requests received.";
+
+}
+            document.getElementById(
+                "totalStudents"
+            ).innerText =
+                data.students.length;
+
+
+            /*
+             * TOTAL TEACHERS
+             */
+
+            document.getElementById(
+                "totalTeachers"
+            ).innerText =
+                data.teachers.length;
+
+
+            /*
+             * TODAY'S ATTENDANCE
+             */
+
+            const today =
+                new Date()
+                    .toISOString()
+                    .split("T")[0];
+
+
+            const todayRecords =
+                data.attendance.filter(
+                    attendance =>
+                        attendance.date === today
+                );
+
+
+            const presentCount =
+                todayRecords.filter(
+                    attendance =>
+                        attendance.status === "Present"
+                ).length;
+
+
+            let attendancePercentage = 0;
+
+
+            if (todayRecords.length > 0) {
+
+                attendancePercentage =
+                    (
+                        presentCount /
+                        todayRecords.length
+                    ) * 100;
+
+            }
+
+
+            document.getElementById(
+                "todayAttendance"
+            ).innerText =
+                attendancePercentage.toFixed(0) + "%";
+
+
+            /*
+             * PENDING FEES
+             */
+
+            const pendingTotal =
+                data.fees
+                    .filter(
+                        fee =>
+                            fee.status === "Pending"
+                    )
+                    .reduce(
+                        (total, fee) =>
+                            total +
+                            Number(fee.amount),
+                        0
+                    );
+
+
+            document.getElementById(
+                "pendingFees"
+            ).innerText =
+                "Rs. " +
+                pendingTotal.toLocaleString();
+
+
+        } catch (error) {
+
+            document.getElementById(
+                "dashboardError"
+            ).innerText =
+                "❌ Dashboard data load nahi ho raha.";
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    function logout() {
+
+        window.location.href =
+            "admin.html";
+
+    }
+
+
+    loadDashboard();
+
+
+</script>
+```
+
+</body>
+
+</html>

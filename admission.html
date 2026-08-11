@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student Admission - The Shine Education System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+        }
+
+        header {
+            background: #123c69;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        header p {
+            margin-top: 6px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .form-box h2 {
+            text-align: center;
+            color: #123c69;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #123c69;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d2f52;
+        }
+
+        button:disabled {
+            background: #777;
+            cursor: not-allowed;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back a {
+            color: #123c69;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>The Shine Education System</h1>
+
+    <p>Campus 2</p>
+
+</header>
+
+
+<div class="container">
+
+    <div class="form-box">
+
+        <h2>👨‍🎓 Student Admission</h2>
+
+
+        <form id="admissionForm">
+
+
+            <div class="input-group">
+
+                <label>Student Name</label>
+
+                <input
+                    id="studentName"
+                    type="text"
+                    placeholder="Enter student name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Father Name</label>
+
+                <input
+                    id="fatherName"
+                    type="text"
+                    placeholder="Enter father's name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Class</label>
+
+                <select
+                    id="className"
+                    required
+                >
+
+                    <option value="">
+                        Select Class
+                    </option>
+
+                    <option>Play Group</option>
+                    <option>Nursery</option>
+                    <option>Prep</option>
+                    <option>1st</option>
+                    <option>2nd</option>
+                    <option>3rd</option>
+                    <option>4th</option>
+                    <option>5th</option>
+                    <option>6th</option>
+                    <option>7th</option>
+                    <option>8th</option>
+                    <option>9th</option>
+                    <option>10th</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Phone Number</label>
+
+                <input
+                    id="phone"
+                    type="text"
+                    placeholder="Enter phone number"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>Address</label>
+
+                <input
+                    id="address"
+                    type="text"
+                    placeholder="Enter address"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                id="submitButton"
+                type="submit"
+            >
+                Submit Admission
+            </button>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+        </form>
+
+
+        <div class="back">
+
+            <a href="index.html">
+                ← Back to School Website
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document
+    .getElementById("admissionForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const submitButton =
+                document.getElementById(
+                    "submitButton"
+                );
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+
+            const admission = {
+
+                studentName:
+                    document
+                        .getElementById("studentName")
+                        .value
+                        .trim(),
+
+                fatherName:
+                    document
+                        .getElementById("fatherName")
+                        .value
+                        .trim(),
+
+                className:
+                    document
+                        .getElementById("className")
+                        .value,
+
+                phone:
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim(),
+
+                address:
+                    document
+                        .getElementById("address")
+                        .value
+                        .trim(),
+
+                date:
+                    new Date().toISOString()
+
+            };
+
+
+            submitButton.disabled = true;
+
+            submitButton.innerText =
+                "Submitting...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/admissions",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    admission
+                                )
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok ||
+                    !data.success) {
+
+                    throw new Error(
+                        data.message ||
+                        "Admission submission failed."
+                    );
+
+                }
+
+
+                message.innerText =
+                    "✅ Admission submitted successfully!";
+
+                message.style.color =
+                    "#198754";
+
+
+                document
+                    .getElementById(
+                        "admissionForm"
+                    )
+                    .reset();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                message.innerText =
+                    "❌ Admission submit nahi ho saki.";
+
+                message.style.color =
+                    "#d62828";
+
+            }
+
+
+            submitButton.disabled = false;
+
+            submitButton.innerText =
+                "Submit Admission";
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>
+  

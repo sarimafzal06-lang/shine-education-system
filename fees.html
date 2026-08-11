@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Fees - The Shine Education System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+}
+
+header {
+    background: #123c69;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 6px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.title {
+    color: #123c69;
+    margin-bottom: 25px;
+}
+
+.form-box,
+.table-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px #00000012;
+}
+
+.form-box h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    margin-top: 18px;
+    padding: 13px 20px;
+    background: #123c69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d2f52;
+}
+
+.delete-btn {
+    background: #d62828;
+    margin: 0;
+    padding: 8px 12px;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.table-box {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #123c69;
+    color: white;
+}
+
+.paid {
+    color: green;
+    font-weight: bold;
+}
+
+.pending {
+    color: red;
+    font-weight: bold;
+}
+
+.back {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back a {
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>The Shine Education System</h1>
+
+<p>Campus 2</p>
+
+</header>
+
+
+<div class="container">
+
+<h2 class="title">
+💰 Fees Management
+</h2>
+
+
+<div class="form-box">
+
+<h2>➕ Add Fee Record</h2>
+
+<form onsubmit="addFee(event)">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="rollNo"
+placeholder="Roll Number"
+required
+>
+
+<input
+type="text"
+id="studentName"
+placeholder="Student Name"
+required
+>
+
+<input
+type="text"
+id="className"
+placeholder="Class"
+required
+>
+
+<input
+type="number"
+id="amount"
+placeholder="Fee Amount"
+required
+>
+
+<input
+type="date"
+id="date"
+required
+>
+
+<select id="status" required>
+
+<option value="">
+Select Status
+</option>
+
+<option value="Paid">
+Paid
+</option>
+
+<option value="Pending">
+Pending
+</option>
+
+</select>
+
+</div>
+
+
+<button type="submit">
+💾 Save Fee
+</button>
+
+</form>
+
+
+<div id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div class="table-box">
+
+<h2 class="title">
+📋 Fee Records
+</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Roll No</th>
+<th>Student</th>
+<th>Class</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="feeTable">
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="back">
+
+<a href="dashboard.html">
+← Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+async function loadFees() {
+
+    const response =
+        await fetch("/api/data");
+
+    const data =
+        await response.json();
+
+    const table =
+        document.getElementById(
+            "feeTable"
+        );
+
+    table.innerHTML = "";
+
+
+    data.fees.forEach(
+        (fee, index) => {
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>
+                ${fee.rollNo}
+            </td>
+
+            <td>
+                ${fee.studentName}
+            </td>
+
+            <td>
+                ${fee.className}
+            </td>
+
+            <td>
+                Rs. ${fee.amount}
+            </td>
+
+            <td>
+                ${fee.date}
+            </td>
+
+            <td class="${
+                fee.status === "Paid"
+                    ? "paid"
+                    : "pending"
+            }">
+
+                ${fee.status}
+
+            </td>
+
+            <td>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteFee(${index})">
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+async function addFee(event) {
+
+    event.preventDefault();
+
+
+    const fee = {
+
+        rollNo:
+            document.getElementById(
+                "rollNo"
+            ).value.trim(),
+
+        studentName:
+            document.getElementById(
+                "studentName"
+            ).value.trim(),
+
+        className:
+            document.getElementById(
+                "className"
+            ).value.trim(),
+
+        amount:
+            Number(
+                document.getElementById(
+                    "amount"
+                ).value
+            ),
+
+        date:
+            document.getElementById(
+                "date"
+            ).value,
+
+        status:
+            document.getElementById(
+                "status"
+            ).value
+
+    };
+
+
+    const response =
+        await fetch("/api/fees", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body:
+                JSON.stringify(fee)
+
+        });
+
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "✅ Fee saved successfully!";
+
+        document.querySelector(
+            "form"
+        ).reset();
+
+        loadFees();
+
+    } else {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "❌ Fee save nahi hui.";
+
+    }
+
+}
+
+
+async function deleteFee(index) {
+
+    if (
+        !confirm(
+            "Delete this fee record?"
+        )
+    ) {
+        return;
+    }
+
+
+    await fetch(
+        "/api/fees/" + index,
+        {
+            method: "DELETE"
+        }
+    );
+
+
+    loadFees();
+
+}
+
+
+loadFees();
+
+</script>
+
+</body>
+
+</html>

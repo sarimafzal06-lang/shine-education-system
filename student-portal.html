@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Student Portal - The Shine Education System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #222;
+}
+
+header {
+    background: #123c69;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 6px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.search-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px #00000012;
+    text-align: center;
+}
+
+.search-box h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    max-width: 500px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 13px 25px;
+    background: #123c69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d2f52;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.student-card {
+    display: none;
+    background: white;
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px #00000012;
+}
+
+.student-card h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-box {
+    background: #eef5fb;
+    padding: 18px;
+    border-radius: 7px;
+}
+
+.info-box strong {
+    display: block;
+    color: #123c69;
+    margin-bottom: 7px;
+}
+
+.back {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back a {
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+
+    .info {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>
+🎓 Student Portal
+</h1>
+
+<p>
+The Shine Education System - Campus 2
+</p>
+
+</header>
+
+
+<div class="container">
+
+
+<div class="search-box">
+
+<h2>
+🔎 Find Your Student Record
+</h2>
+
+<form onsubmit="findStudent(event)">
+
+<input
+type="text"
+id="rollNo"
+placeholder="Enter Roll Number"
+required
+>
+
+<br>
+
+<button type="submit">
+Search Student
+</button>
+
+</form>
+
+
+<div
+id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div
+id="studentCard"
+class="student-card">
+
+<h2>
+👨‍🎓 Student Information
+</h2>
+
+
+<div class="info">
+
+
+<div class="info-box">
+
+<strong>
+Roll Number
+</strong>
+
+<span id="studentRoll">
+-
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<strong>
+Student Name
+</strong>
+
+<span id="studentName">
+-
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<strong>
+Father Name
+</strong>
+
+<span id="fatherName">
+-
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<strong>
+Class
+</strong>
+
+<span id="className">
+-
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<strong>
+Phone
+</strong>
+
+<span id="phone">
+-
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+<div
+    id="notificationBox"
+    style="
+        display:none;
+        margin-top:25px;
+        padding:20px;
+        border-radius:10px;
+        background:#e8f5e9;
+        border-left:6px solid #198754;
+    "
+>
+
+    <h3
+        id="notificationTitle"
+        style="color:#198754; margin-bottom:10px;">
+    </h3>
+
+    <p
+        id="notificationMessage"
+        style="margin-bottom:8px;">
+    </p>
+
+    <small
+        id="notificationDate">
+    </small>
+
+</div>
+
+<div class="back">
+
+<a href="index.html">
+← Back to Website
+</a>
+
+</div>
+
+</div>
+<script>
+async function findStudent(event) {
+
+    event.preventDefault();
+
+    const rollNo =
+        document.getElementById("rollNo").value.trim();
+
+    const message =
+        document.getElementById("message");
+
+    const card =
+        document.getElementById("studentCard");
+
+
+    if (!rollNo) {
+
+        card.style.display = "none";
+
+        message.innerText =
+            "❌ Please enter Roll Number.";
+
+        message.style.color =
+            "#d62828";
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/student/" +
+                encodeURIComponent(rollNo)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            card.style.display = "none";
+
+            message.innerText =
+                data.message ||
+                "❌ Student record not found.";
+
+            message.style.color =
+                "#d62828";
+
+            return;
+        }
+
+
+        const student =
+            data.student;
+
+
+        document.getElementById(
+            "studentRoll"
+        ).innerText =
+            student.rollNo || "-";
+
+
+        document.getElementById(
+            "studentName"
+        ).innerText =
+            student.studentName || "-";
+
+
+        document.getElementById(
+            "fatherName"
+        ).innerText =
+            student.fatherName || "-";
+
+
+        document.getElementById(
+            "className"
+        ).innerText =
+            student.className || "-";
+
+
+        document.getElementById(
+            "phone"
+        ).innerText =
+            student.phone || "-";
+const notificationBox =
+    document.getElementById("notificationBox");
+
+if (student.notification) {
+
+    document.getElementById(
+        "notificationTitle"
+    ).innerText =
+        "📢 " +
+        (student.notification.title || "Notification");
+
+    document.getElementById(
+        "notificationMessage"
+    ).innerText =
+        student.notification.message || "";
+
+    document.getElementById(
+        "notificationDate"
+    ).innerText =
+        student.notification.date
+            ? new Date(
+                student.notification.date
+              ).toLocaleString()
+            : "";
+
+    notificationBox.style.display =
+        "block";
+
+} else {
+
+    notificationBox.style.display =
+        "none";
+}
+
+        card.style.display =
+            "block";
+
+
+        message.innerText =
+            "✅ Student record found.";
+
+
+        message.style.color =
+            "#198754";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        card.style.display =
+            "none";
+
+
+        message.innerText =
+            "❌ Server connection error.";
+
+
+        message.style.color =
+            "#d62828";
+
+    }
+
+}
+</script>
+
+</body>
+
+</html>

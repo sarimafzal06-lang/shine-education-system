@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>The Shine Education System - Campus 2</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f4f7fb;
+    color: #222;
+}
+
+
+/* NAVBAR */
+
+nav {
+    background: #123c69;
+    color: white;
+    padding: 18px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    color: #b9ddff;
+}
+
+
+/* HERO */
+
+.hero {
+    min-height: 520px;
+    background:
+        linear-gradient(
+            #123c69dd,
+            #123c69dd
+        );
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+.hero-button {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 14px 25px;
+    background: white;
+    color: #123c69;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+/* SECTIONS */
+
+section {
+    padding: 70px 7%;
+}
+
+.section-title {
+    text-align: center;
+    color: #123c69;
+    font-size: 32px;
+    margin-bottom: 40px;
+}
+
+
+/* ABOUT */
+
+.about {
+    background: white;
+}
+
+.about-content {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+    line-height: 1.8;
+    font-size: 17px;
+}
+
+
+/* CARDS */
+
+.cards {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow:
+        0 4px 15px #00000012;
+}
+
+.card-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    color: #123c69;
+    margin-bottom: 10px;
+}
+
+.card p {
+    line-height: 1.6;
+    color: #555;
+}
+
+
+/* ANNOUNCEMENTS */
+
+.announcement-list {
+    max-width: 900px;
+    margin: auto;
+}
+
+.announcement {
+    background: white;
+    padding: 22px;
+    margin-bottom: 15px;
+    border-left: 5px solid #123c69;
+    border-radius: 6px;
+}
+
+.announcement h3 {
+    color: #123c69;
+    margin-bottom: 8px;
+}
+
+.announcement p {
+    line-height: 1.6;
+}
+
+.date {
+    color: #777;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+
+/* CONTACT */
+
+.contact {
+    background: white;
+}
+
+.contact-box {
+    max-width: 700px;
+    margin: auto;
+    text-align: center;
+    line-height: 2;
+    font-size: 17px;
+}
+
+
+/* FOOTER */
+
+footer {
+    background: #123c69;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+.admin-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .hero p {
+        font-size: 17px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVIGATION -->
+
+
+<nav>
+
+<div class="logo">
+🏫 Shine School
+</div>
+
+<div class="nav-links">
+
+<a href="#home">
+Home
+</a>
+
+<a href="#about">
+About
+</a>
+
+<a href="#facilities">
+Facilities
+</a>
+
+<a href="student-portal.html">
+🎓 Student Portal
+</a>
+<a href="admission.html" class="action">
+    🎓 Student Admission
+</a>
+<a href="#announcements">
+Announcements
+</a>
+
+<a href="#contact">
+Contact
+</a>
+
+</div>
+
+</nav>
+
+
+
+
+<!-- HERO -->
+
+<section
+class="hero"
+id="home">
+
+<div class="hero-content">
+
+<h1>
+The Shine Education System
+</h1>
+
+<p>
+Campus 2
+</p>
+
+<p>
+Building a brighter future through
+quality education, discipline and
+character.
+</p>
+
+
+<a
+href="#about"
+class="hero-button">
+
+Explore Our School
+<a
+href="student-portal.html"
+class="hero-button">
+
+🎓 Student Portal
+
+</a>
+
+</a>
+
+</div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section
+class="about"
+id="about">
+
+<h2 class="section-title">
+About Our School
+</h2>
+
+
+<div class="about-content">
+
+<p>
+Welcome to The Shine Education System,
+Campus 2. Our goal is to provide students
+with quality education in a safe,
+disciplined and positive environment.
+</p>
+
+<br>
+
+<p>
+We focus on academic excellence,
+character building, creativity and
+preparing students for a successful future.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- FACILITIES -->
+
+<section
+id="facilities">
+
+<h2 class="section-title">
+Our Facilities
+</h2>
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<div class="card-icon">
+📚
+</div>
+
+<h3>
+Quality Education
+</h3>
+
+<p>
+Experienced teachers and a strong
+academic environment for students.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">
+💻
+</div>
+
+<h3>
+Modern Learning
+</h3>
+
+<p>
+Technology-supported learning and
+modern educational methods.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">
+⚽
+</div>
+
+<h3>
+Activities
+</h3>
+
+<p>
+Healthy sports and extracurricular
+activities for students.
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- ANNOUNCEMENTS -->
+
+<section
+id="announcements">
+
+<h2 class="section-title">
+📢 Latest Announcements
+</h2>
+
+
+<div
+class="announcement-list"
+id="announcementList">
+
+<p style="text-align:center;">
+Loading announcements...
+</p>
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section
+class="contact"
+id="contact">
+
+<h2 class="section-title">
+📞 Contact Us
+</h2>
+
+
+<div class="contact-box">
+
+<p>
+🏫 Qamar BAIG Villas opposite to Explorer college jinnah campus islamabad japan road The Shine Education System
+</p>
+
+<p>
+📍 Campus 2
+</p>
+
+<p>
+📞 03140710260 <br>
+     03361559590
+</p>
+
+<p>
+📧 schoolxyz@example.com
+</p>
+
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<p>
+© 2026 The Shine Education System -
+Campus 2
+</p>
+
+
+<a
+href="admin.html"
+class="admin-link">
+
+🔐 Admin Login
+
+</a>
+
+</footer>
+
+
+<script>
+
+async function loadAnnouncements() {
+
+    try {
+
+        const response =
+            await fetch("/api/data");
+
+
+        const data =
+            await response.json();
+
+
+        const list =
+            document.getElementById(
+                "announcementList"
+            );
+
+
+        list.innerHTML = "";
+
+
+        if (
+            data.announcements.length === 0
+        ) {
+
+            list.innerHTML =
+                "<p style='text-align:center;'>No announcements available.</p>";
+
+            return;
+
+        }
+
+
+        data.announcements
+            .slice()
+            .reverse()
+            .forEach(
+                announcement => {
+
+                const box =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                box.className =
+                    "announcement";
+
+
+                box.innerHTML = `
+
+                    <h3>
+                        ${announcement.title}
+                    </h3>
+
+                    <p>
+                        ${announcement.message}
+                    </p>
+
+                    <div class="date">
+                        ${announcement.date}
+                    </div>
+
+                `;
+
+
+                list.appendChild(box);
+
+            });
+
+
+    } catch (error) {
+
+        document.getElementById(
+            "announcementList"
+        ).innerHTML =
+            "<p style='text-align:center;'>Announcements load nahi ho sakin.</p>";
+
+        console.error(error);
+
+    }
+
+}
+
+
+loadAnnouncements();
+
+</script>
+
+
+</body>
+
+</html>

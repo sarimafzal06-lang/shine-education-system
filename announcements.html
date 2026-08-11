@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Announcements - The Shine Education System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+}
+
+header {
+    background: #123c69;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 6px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.title {
+    color: #123c69;
+    margin-bottom: 25px;
+}
+
+.form-box,
+.table-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px #00000012;
+}
+
+.form-box h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+button {
+    padding: 13px 20px;
+    background: #123c69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d2f52;
+}
+
+.delete-btn {
+    background: #d62828;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.announcement {
+    background: #f8fafc;
+    border-left: 5px solid #123c69;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.announcement h3 {
+    color: #123c69;
+    margin-bottom: 8px;
+}
+
+.announcement p {
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.date {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.back {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back a {
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>The Shine Education System</h1>
+
+<p>Campus 2</p>
+
+</header>
+
+
+<div class="container">
+
+<h2 class="title">
+📢 Announcements
+</h2>
+
+
+<div class="form-box">
+
+<h2>➕ Add Announcement</h2>
+
+<form onsubmit="addAnnouncement(event)">
+
+<input
+type="text"
+id="title"
+placeholder="Announcement Title"
+required
+>
+
+<textarea
+id="messageText"
+placeholder="Write announcement..."
+required
+></textarea>
+
+<button type="submit">
+📢 Publish Announcement
+</button>
+
+</form>
+
+
+<div id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div class="table-box">
+
+<h2 class="title">
+📋 Published Announcements
+</h2>
+
+<div id="announcementList">
+</div>
+
+</div>
+
+
+<div class="back">
+
+<a href="dashboard.html">
+← Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+async function loadAnnouncements() {
+
+    const response =
+        await fetch("/api/data");
+
+    const data =
+        await response.json();
+
+
+    const list =
+        document.getElementById(
+            "announcementList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    data.announcements.forEach(
+        (announcement, index) => {
+
+        const box =
+            document.createElement("div");
+
+        box.className =
+            "announcement";
+
+
+        box.innerHTML = `
+
+            <h3>
+                ${announcement.title}
+            </h3>
+
+            <p>
+                ${announcement.message}
+            </p>
+
+            <div class="date">
+                ${announcement.date}
+            </div>
+
+            <button
+                class="delete-btn"
+                onclick="deleteAnnouncement(${index})">
+
+                Delete
+
+            </button>
+
+        `;
+
+
+        list.appendChild(box);
+
+    });
+
+}
+
+
+async function addAnnouncement(event) {
+
+    event.preventDefault();
+
+
+    const announcement = {
+
+        title:
+            document.getElementById(
+                "title"
+            ).value.trim(),
+
+        message:
+            document.getElementById(
+                "messageText"
+            ).value.trim(),
+
+        date:
+            new Date().toLocaleDateString()
+
+    };
+
+
+    const response =
+        await fetch(
+            "/api/announcements",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(
+                        announcement
+                    )
+
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "✅ Announcement published!";
+
+        document.querySelector(
+            "form"
+        ).reset();
+
+        loadAnnouncements();
+
+    } else {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "❌ Announcement publish nahi hui.";
+
+    }
+
+}
+
+
+async function deleteAnnouncement(index) {
+
+    if (
+        !confirm(
+            "Delete this announcement?"
+        )
+    ) {
+        return;
+    }
+
+
+    await fetch(
+        "/api/announcements/" + index,
+        {
+            method: "DELETE"
+        }
+    );
+
+
+    loadAnnouncements();
+
+}
+
+
+loadAnnouncements();
+
+</script>
+
+</body>
+
+</html>

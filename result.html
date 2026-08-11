@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Results - The Shine Education System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+}
+
+header {
+    background: #123c69;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 6px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.title {
+    color: #123c69;
+    margin-bottom: 25px;
+}
+
+.form-box,
+.table-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px #00000012;
+}
+
+.form-box h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    margin-top: 18px;
+    padding: 13px 20px;
+    background: #123c69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d2f52;
+}
+
+.delete-btn {
+    background: #d62828;
+    margin: 0;
+    padding: 8px 12px;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.table-box {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #123c69;
+    color: white;
+}
+
+.back {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back a {
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>The Shine Education System</h1>
+
+<p>Campus 2</p>
+
+</header>
+
+
+<div class="container">
+
+<h2 class="title">📝 Result Management</h2>
+
+
+<div class="form-box">
+
+<h2>➕ Add Student Result</h2>
+
+<form onsubmit="addResult(event)">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="rollNo"
+placeholder="Roll Number"
+required
+>
+
+<input
+type="text"
+id="studentName"
+placeholder="Student Name"
+required
+>
+
+<input
+type="text"
+id="className"
+placeholder="Class"
+required
+>
+
+<input
+type="text"
+id="exam"
+placeholder="Exam Name"
+required
+>
+
+<input
+type="number"
+id="marks"
+placeholder="Obtained Marks"
+required
+>
+
+<input
+type="number"
+id="totalMarks"
+placeholder="Total Marks"
+required
+>
+
+</div>
+
+<button type="submit">
+💾 Save Result
+</button>
+
+</form>
+
+<div id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div class="table-box">
+
+<h2 class="title">
+📋 Result Records
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Roll No</th>
+<th>Student</th>
+<th>Class</th>
+<th>Exam</th>
+<th>Marks</th>
+<th>Percentage</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="resultTable">
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="back">
+
+<a href="dashboard.html">
+← Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+async function loadResults() {
+
+    const response =
+        await fetch("/api/data");
+
+    const data =
+        await response.json();
+
+    const table =
+        document.getElementById(
+            "resultTable"
+        );
+
+    table.innerHTML = "";
+
+
+    data.results.forEach(
+        (result, index) => {
+
+        const percentage =
+            (
+                result.marks /
+                result.totalMarks
+            ) * 100;
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${result.rollNo}</td>
+
+            <td>${result.studentName}</td>
+
+            <td>${result.className}</td>
+
+            <td>${result.exam}</td>
+
+            <td>
+                ${result.marks}/${result.totalMarks}
+            </td>
+
+            <td>
+                ${percentage.toFixed(2)}%
+            </td>
+
+            <td>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteResult(${index})">
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+async function addResult(event) {
+
+    event.preventDefault();
+
+
+    const result = {
+
+        rollNo:
+            document.getElementById(
+                "rollNo"
+            ).value.trim(),
+
+        studentName:
+            document.getElementById(
+                "studentName"
+            ).value.trim(),
+
+        className:
+            document.getElementById(
+                "className"
+            ).value.trim(),
+
+        exam:
+            document.getElementById(
+                "exam"
+            ).value.trim(),
+
+        marks:
+            Number(
+                document.getElementById(
+                    "marks"
+                ).value
+            ),
+
+        totalMarks:
+            Number(
+                document.getElementById(
+                    "totalMarks"
+                ).value
+            )
+
+    };
+
+
+    const response =
+        await fetch("/api/results", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body:
+                JSON.stringify(result)
+
+        });
+
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "✅ Result saved successfully!";
+
+        document.querySelector(
+            "form"
+        ).reset();
+
+        loadResults();
+
+    } else {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "❌ Result save nahi hua.";
+
+    }
+
+}
+
+
+async function deleteResult(index) {
+
+    if (
+        !confirm(
+            "Delete this result?"
+        )
+    ) {
+        return;
+    }
+
+
+    await fetch(
+        "/api/results/" + index,
+        {
+            method: "DELETE"
+        }
+    );
+
+
+    loadResults();
+
+}
+
+
+loadResults();
+
+</script>
+
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Results - The Shine Education System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+}
+
+header {
+    background: #123c69;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 6px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.title {
+    color: #123c69;
+    margin-bottom: 25px;
+}
+
+.form-box,
+.table-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px #00000012;
+}
+
+.form-box h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    margin-top: 18px;
+    padding: 13px 20px;
+    background: #123c69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d2f52;
+}
+
+.delete-btn {
+    background: #d62828;
+    margin: 0;
+    padding: 8px 12px;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.table-box {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #123c69;
+    color: white;
+}
+
+.back {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back a {
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>The Shine Education System</h1>
+
+<p>Campus 2</p>
+
+</header>
+
+
+<div class="container">
+
+<h2 class="title">📝 Result Management</h2>
+
+
+<div class="form-box">
+
+<h2>➕ Add Student Result</h2>
+
+<form onsubmit="addResult(event)">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="rollNo"
+placeholder="Roll Number"
+required
+>
+
+<input
+type="text"
+id="studentName"
+placeholder="Student Name"
+required
+>
+
+<input
+type="text"
+id="className"
+placeholder="Class"
+required
+>
+
+<input
+type="text"
+id="exam"
+placeholder="Exam Name"
+required
+>
+
+<input
+type="number"
+id="marks"
+placeholder="Obtained Marks"
+required
+>
+
+<input
+type="number"
+id="totalMarks"
+placeholder="Total Marks"
+required
+>
+
+</div>
+
+<button type="submit">
+💾 Save Result
+</button>
+
+</form>
+
+<div id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div class="table-box">
+
+<h2 class="title">
+📋 Result Records
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Roll No</th>
+<th>Student</th>
+<th>Class</th>
+<th>Exam</th>
+<th>Marks</th>
+<th>Percentage</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="resultTable">
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="back">
+
+<a href="dashboard.html">
+← Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+async function loadResults() {
+
+    const response =
+        await fetch("/api/data");
+
+    const data =
+        await response.json();
+
+    const table =
+        document.getElementById(
+            "resultTable"
+        );
+
+    table.innerHTML = "";
+
+
+    data.results.forEach(
+        (result, index) => {
+
+        const percentage =
+            (
+                result.marks /
+                result.totalMarks
+            ) * 100;
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${result.rollNo}</td>
+
+            <td>${result.studentName}</td>
+
+            <td>${result.className}</td>
+
+            <td>${result.exam}</td>
+
+            <td>
+                ${result.marks}/${result.totalMarks}
+            </td>
+
+            <td>
+                ${percentage.toFixed(2)}%
+            </td>
+
+            <td>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteResult(${index})">
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+async function addResult(event) {
+
+    event.preventDefault();
+
+
+    const result = {
+
+        rollNo:
+            document.getElementById(
+                "rollNo"
+            ).value.trim(),
+
+        studentName:
+            document.getElementById(
+                "studentName"
+            ).value.trim(),
+
+        className:
+            document.getElementById(
+                "className"
+            ).value.trim(),
+
+        exam:
+            document.getElementById(
+                "exam"
+            ).value.trim(),
+
+        marks:
+            Number(
+                document.getElementById(
+                    "marks"
+                ).value
+            ),
+
+        totalMarks:
+            Number(
+                document.getElementById(
+                    "totalMarks"
+                ).value
+            )
+
+    };
+
+
+    const response =
+        await fetch("/api/results", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body:
+                JSON.stringify(result)
+
+        });
+
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "✅ Result saved successfully!";
+
+        document.querySelector(
+            "form"
+        ).reset();
+
+        loadResults();
+
+    } else {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "❌ Result save nahi hua.";
+
+    }
+
+}
+
+
+async function deleteResult(index) {
+
+    if (
+        !confirm(
+            "Delete this result?"
+        )
+    ) {
+        return;
+    }
+
+
+    await fetch(
+        "/api/results/" + index,
+        {
+            method: "DELETE"
+        }
+    );
+
+
+    loadResults();
+
+}
+
+
+loadResults();
+
+</script>
+
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Results - The Shine Education System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+}
+
+header {
+    background: #123c69;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header p {
+    margin-top: 6px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.title {
+    color: #123c69;
+    margin-bottom: 25px;
+}
+
+.form-box,
+.table-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px #00000012;
+}
+
+.form-box h2 {
+    color: #123c69;
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    margin-top: 18px;
+    padding: 13px 20px;
+    background: #123c69;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d2f52;
+}
+
+.delete-btn {
+    background: #d62828;
+    margin: 0;
+    padding: 8px 12px;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.table-box {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background: #123c69;
+    color: white;
+}
+
+.back {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back a {
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>The Shine Education System</h1>
+
+<p>Campus 2</p>
+
+</header>
+
+
+<div class="container">
+
+<h2 class="title">📝 Result Management</h2>
+
+
+<div class="form-box">
+
+<h2>➕ Add Student Result</h2>
+
+<form onsubmit="addResult(event)">
+
+<div class="form-grid">
+
+<input
+type="text"
+id="rollNo"
+placeholder="Roll Number"
+required
+>
+
+<input
+type="text"
+id="studentName"
+placeholder="Student Name"
+required
+>
+
+<input
+type="text"
+id="className"
+placeholder="Class"
+required
+>
+
+<input
+type="text"
+id="exam"
+placeholder="Exam Name"
+required
+>
+
+<input
+type="number"
+id="marks"
+placeholder="Obtained Marks"
+required
+>
+
+<input
+type="number"
+id="totalMarks"
+placeholder="Total Marks"
+required
+>
+
+</div>
+
+<button type="submit">
+💾 Save Result
+</button>
+
+</form>
+
+<div id="message"
+class="message">
+</div>
+
+</div>
+
+
+<div class="table-box">
+
+<h2 class="title">
+📋 Result Records
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Roll No</th>
+<th>Student</th>
+<th>Class</th>
+<th>Exam</th>
+<th>Marks</th>
+<th>Percentage</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="resultTable">
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="back">
+
+<a href="dashboard.html">
+← Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+async function loadResults() {
+
+    const response =
+        await fetch("/api/data");
+
+    const data =
+        await response.json();
+
+    const table =
+        document.getElementById(
+            "resultTable"
+        );
+
+    table.innerHTML = "";
+
+
+    data.results.forEach(
+        (result, index) => {
+
+        const percentage =
+            (
+                result.marks /
+                result.totalMarks
+            ) * 100;
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${result.rollNo}</td>
+
+            <td>${result.studentName}</td>
+
+            <td>${result.className}</td>
+
+            <td>${result.exam}</td>
+
+            <td>
+                ${result.marks}/${result.totalMarks}
+            </td>
+
+            <td>
+                ${percentage.toFixed(2)}%
+            </td>
+
+            <td>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteResult(${index})">
+
+                    Delete
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+async function addResult(event) {
+
+    event.preventDefault();
+
+
+    const result = {
+
+        rollNo:
+            document.getElementById(
+                "rollNo"
+            ).value.trim(),
+
+        studentName:
+            document.getElementById(
+                "studentName"
+            ).value.trim(),
+
+        className:
+            document.getElementById(
+                "className"
+            ).value.trim(),
+
+        exam:
+            document.getElementById(
+                "exam"
+            ).value.trim(),
+
+        marks:
+            Number(
+                document.getElementById(
+                    "marks"
+                ).value
+            ),
+
+        totalMarks:
+            Number(
+                document.getElementById(
+                    "totalMarks"
+                ).value
+            )
+
+    };
+
+
+    const response =
+        await fetch("/api/results", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body:
+                JSON.stringify(result)
+
+        });
+
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "✅ Result saved successfully!";
+
+        document.querySelector(
+            "form"
+        ).reset();
+
+        loadResults();
+
+    } else {
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "❌ Result save nahi hua.";
+
+    }
+
+}
+
+
+async function deleteResult(index) {
+
+    if (
+        !confirm(
+            "Delete this result?"
+        )
+    ) {
+        return;
+    }
+
+
+    await fetch(
+        "/api/results/" + index,
+        {
+            method: "DELETE"
+        }
+    );
+
+
+    loadResults();
+
+}
+
+
+loadResults();
+
+</script>
+
+</body>
+
+</html>  

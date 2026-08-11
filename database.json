@@ -1,0 +1,126 @@
+{
+    "students": [
+        {
+            "rollNo": "1001",
+            "studentName": "Ali",
+            "fatherName": "Ahmed",
+            "className": "10th",
+            "phone": "03001234567"
+        }
+    ],
+    "teachers": [
+        {
+            "teacherName": "Ahmed Khan",
+            "subject": "Mathematics",
+            "phone": "03001234567",
+            "qualification": "M.Sc Mathematics"
+        }
+    ],
+    "results": [],
+    "attendance": [
+        {
+            "rollNo": "1001",
+            "studentName": "Ali",
+            "className": "10th",
+            "date": "2026-11-08",
+            "status": "Present"
+        },
+        {
+            "rollNo": "1002",
+            "studentName": "Muhammad sarim",
+            "className": "10th",
+            "date": "2026-08-11",
+            "status": "Absent"
+        }
+    ],
+    "fees": [],
+    "announcements": [
+        {
+            "title": "School Annual Function",
+            "message": "Annual function will be held on Friday.",
+            "date": "8/11/2026"
+        },
+        {
+            "title": "independnce day function",
+            "message": "independence day function is 13 of Agust 9:00 to 12:00",
+            "date": "8/11/2026"
+        }
+    ],
+    "admissions": [
+        {
+            "studentName": "Ali",
+            "fatherName": "Ahmed",
+            "className": "10th",
+            "phone": "03001234567",
+            "address": "Test Adress",
+            "date": "2026-08-11T17:34:34.825Z",
+            "id": 1786469674831,
+            "status": "Rejected",
+            "notification": {
+                "title": "Admission Rejected",
+                "message": "Your admission request has been rejected.",
+                "date": "2026-08-11T18:33:32.559Z"
+            }
+        },
+        {
+            "studentName": "Ali",
+            "fatherName": "Ahmed",
+            "className": "10th",
+            "phone": "03001234567",
+            "address": "Test Adress",
+            "date": "2026-08-11T17:41:19.053Z",
+            "id": 1786470079060,
+            "status": "Approved",
+            "notification": {
+                "title": "Admission Approved",
+                "message": "Your admission has been approved. Please visit The Shine Education System, Campus 2.",
+                "date": "2026-08-11T18:32:48.679Z"
+            }
+        },
+        {
+            "studentName": "Muhammad sarim",
+            "fatherName": "Afzal",
+            "className": "10th",
+            "phone": "03001234567",
+            "address": "Test Adress",
+            "date": "2026-08-11T18:38:48.383Z",
+            "id": 1786473528394,
+            "status": "Approved",
+            "notification": {
+                "title": "Admission Approved",
+                "message": "Your admission has been approved. Please visit The Shine Education System, Campus 2.",
+                "date": "2026-08-11T18:38:57.284Z"
+            }
+        },
+        {
+            "studentName": "Ali",
+            "fatherName": "Ahmed",
+            "className": "10th",
+            "phone": "03001234567",
+            "address": "Test Adress",
+            "date": "2026-08-11T18:49:49.568Z",
+            "id": 1786474189574,
+            "status": "Approved",
+            "notification": {
+                "title": "Admission Approved",
+                "message": "Your admission has been approved. Please visit The Shine Education System, Campus 2.",
+                "date": "2026-08-11T18:50:06.689Z"
+            }
+        },
+        {
+            "studentName": "Ali",
+            "fatherName": "Ahmed",
+            "className": "10th",
+            "phone": "03123456789",
+            "address": "Test Adress",
+            "date": "2026-08-11T18:55:32.905Z",
+            "id": 1786474532910,
+            "status": "Rejected",
+            "notification": {
+                "title": "Admission Rejected",
+                "message": "Your admission request has been rejected.",
+                "date": "2026-08-11T18:55:46.960Z"
+            }
+        }
+    ]
+}
